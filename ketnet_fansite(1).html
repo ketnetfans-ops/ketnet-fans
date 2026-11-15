@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="nl-BE" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ketnet Fans! - De leukste fansite van Vlaanderen</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka voor speelse titels, Nunito voor vlotte leesbaarheid -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome voor leuke iconen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti voor het feestelijke einde van de quiz -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Fredoka', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        ketnetOrange: '#FF5E00',
+                        ketnetYellow: '#FFD500',
+                        ketnetBlue: '#009FE3',
+                        ketnetPink: '#E6007E',
+                        ketnetPurple: '#702283',
+                        ketnetGreen: '#76B82A',
+                    },
+                    boxShadow: {
+                        'playful': '0 6px 0px rgba(0, 0, 0, 0.15)',
+                        'playful-hover': '0 3px 0px rgba(0, 0, 0, 0.15)',
+                        'card': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #FFFDF5;
+            background-image: radial-gradient(#FFD500 1.5px, transparent 1.5px), radial-gradient(#009FE3 1.5px, #FFFDF5 1.5px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Speelse knop-animatie */
+        .btn-bounce {
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+        }
+        .btn-bounce:hover {
+            transform: translateY(-2px);
+        }
+        .btn-bounce:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Zwevende animatie voor badge/iconen */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        /* Pop-in animatie voor stickers */
+        @keyframes popIn {
+            0% { transform: scale(0.7) rotate(-5deg); opacity: 0; }
+            80% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+            100% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+        }
+        .sticker-pop {
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased selection:bg-ketnetPink selection:text-white">
+
+    <!-- 1. HEADER & NAVIGATIE -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-ketnetOrange shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="bg-ketnetOrange text-white font-display font-bold text-2xl sm:text-3xl px-4 py-1.5 rounded-2xl transform -rotate-3 group-hover:rotate-0 transition-transform shadow-playful border-2 border-white">
+                    KETNET <span class="text-ketnetYellow">FANS</span>
+                </div>
+                <span class="hidden sm:inline-block bg-ketnetPink text-white text-xs font-extrabold uppercase px-2.5 py-1 rounded-full transform rotate-6">
+                    100% Fun!
+                </span>
+            </a>
+
+            <!-- Navigatiemenu -->
+            <nav class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <a href="#programmas" class="px-3 py-2 rounded-xl font-display font-semibold text-sm sm:text-base bg-ketnetYellow/30 hover:bg-ketnetYellow text-slate-900 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-tv text-ketnetOrange"></i> Programma's
+                </a>
+                <a href="#evenementen" class="px-3 py-2 rounded-xl font-display font-semibold text-sm sm:text-base bg-ketnetOrange/20 hover:bg-ketnetOrange hover:text-white text-slate-900 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-calendar-star fa-solid fa-ticket text-ketnetOrange group-hover:text-white"></i> Evenementen
+                </a>
+                <a href="#wrappers" class="px-3 py-2 rounded-xl font-display font-semibold text-sm sm:text-base bg-ketnetBlue/20 hover:bg-ketnetBlue hover:text-white text-slate-900 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-hand-sparkles text-ketnetBlue group-hover:text-white"></i> Wrappers
+                </a>
+                <a href="#quiz" class="px-3 py-2 rounded-xl font-display font-semibold text-sm sm:text-base bg-ketnetPink/20 hover:bg-ketnetPink hover:text-white text-slate-900 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-ketnetPink"></i> Quiz
+                </a>
+                <a href="#fanmuur" class="px-3 py-2 rounded-xl font-display font-semibold text-sm sm:text-base bg-ketnetGreen/20 hover:bg-ketnetGreen hover:text-white text-slate-900 transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-comments text-ketnetGreen"></i> Fan-Muur
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- WELKOMSTBANNER (HERO) -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-ketnetOrange via-ketnetPink to-ketnetPurple text-white py-12 sm:py-20 px-4 border-b-8 border-ketnetYellow">
+        <!-- Speelse achtergrondcirkels -->
+        <div class="absolute -top-10 -left-10 w-40 h-40 bg-ketnetYellow/20 rounded-full blur-xl"></div>
+        <div class="absolute bottom-5 right-10 w-56 h-56 bg-ketnetBlue/30 rounded-full blur-xl"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm sm:text-base font-bold mb-6 border border-white/30 animate-float">
+                <span>🎉</span> Welkom op de coolste fanplek van Vlaanderen! <span>🚀</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-display font-bold tracking-tight mb-4 drop-shadow-md">
+                Altijd feest met <span class="text-ketnetYellow underline decoration-wavy decoration-ketnetBlue">Ketnet Fans!</span>
+            </h1>
+            <p class="text-lg sm:text-xl max-w-2xl mx-auto font-medium text-white/95 mb-8 leading-relaxed">
+                Ontdek alles over jouw favoriete reeksen, geef een dikke high-five aan de Ketnet-wrappers, test je kennis in de superquiz en plak jouw eigen bericht op onze Fan-Muur!
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#evenementen" class="btn-bounce bg-ketnetYellow text-slate-900 font-display font-bold text-lg px-7 py-3.5 rounded-2xl shadow-playful flex items-center gap-2">
+                    <i class="fa-solid fa-ticket"></i> Bekijk Evenementen
+                </a>
+                <a href="#programmas" class="btn-bounce bg-ketnetBlue text-white font-display font-bold text-lg px-7 py-3.5 rounded-2xl shadow-playful flex items-center gap-2 border-2 border-white/40">
+                    <i class="fa-solid fa-play"></i> Ontdek Programma's
+                </a>
+                <a href="https://www.vrt.be/vrtmax/ketnet/" target="_blank" rel="noopener noreferrer" class="btn-bounce bg-slate-900 text-white font-display font-bold text-lg px-7 py-3.5 rounded-2xl shadow-playful flex items-center gap-2 border-2 border-white/30">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-ketnetYellow"></i> Ketnet op VRT MAX
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-4 py-12 space-y-24">
+
+        <!-- EVENEMENTEN & TOURS SECTIE -->
+        <section id="evenementen" class="scroll-mt-24 bg-gradient-to-br from-ketnetYellow/25 via-white to-ketnetPink/15 rounded-[2.5rem] p-6 sm:p-12 border-4 border-ketnetYellow shadow-card">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div>
+                    <span class="bg-ketnetOrange text-white font-extrabold px-4 py-1 rounded-full text-sm uppercase tracking-wider">Live & On Tour</span>
+                    <h2 class="text-3xl sm:text-5xl font-display font-bold text-slate-900 mt-2">Ketnet Evenementen & Tours 🎪</h2>
+                    <p class="text-slate-700 mt-2 text-lg max-w-2xl">Ontmoet de wrappers in het echt, zing mee met De KetnetBand en mis geen enkel groot Ketnet-feest in Vlaanderen!</p>
+                </div>
+
+                <!-- Teller voor Favoriete Events / Herinneringen -->
+                <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-playful flex items-center gap-3 self-start md:self-auto border-2 border-ketnetYellow">
+                    <div class="bg-ketnetPink w-10 h-10 rounded-xl flex items-center justify-center text-xl">
+                        🔔
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-extrabold text-ketnetYellow tracking-wider">Mijn Herinneringen</div>
+                        <div class="font-display font-bold text-lg">
+                            <span id="saved-events-count">0</span> event(s) bewaard
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categorie Filters voor Evenementen -->
+            <div class="flex flex-wrap gap-2.5 sm:gap-3 mb-8" id="event-filter-container">
+                <button data-event-filter="Alle" class="event-filter-btn active btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-slate-900 text-white shadow-playful">
+                    ✨ Alle Events
+                </button>
+                <button data-event-filter="Shows & Live" class="event-filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-800 hover:bg-ketnetPink hover:text-white shadow-playful border-2 border-slate-100">
+                    🎭 Shows & Live
+                </button>
+                <button data-event-filter="Muziek & Tour" class="event-filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-800 hover:bg-ketnetBlue hover:text-white shadow-playful border-2 border-slate-100">
+                    🎸 Muziek & Tour
+                </button>
+                <button data-event-filter="Expo & Seizoen" class="event-filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-800 hover:bg-ketnetOrange hover:text-white shadow-playful border-2 border-slate-100">
+                    🎃 Expo & Seizoen
+                </button>
+            </div>
+
+            <!-- Grid met Evenementen -->
+            <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Evenementen worden geladen via JavaScript -->
+            </div>
+
+            <!-- Banner naar VRT MAX Ketnet -->
+            <div class="mt-10 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border-4 border-ketnetBlue">
+                <div class="flex items-center gap-4 text-center sm:text-left flex-col sm:flex-row">
+                    <div class="text-5xl">📺</div>
+                    <div>
+                        <h3 class="text-2xl font-display font-bold text-ketnetYellow">Herbeleef alle shows & afleveringen!</h3>
+                        <p class="text-slate-300 text-sm sm:text-base mt-1">Kon je er niet bij zijn of wil je nagenieten? Bekijk alle Ketnet-events en programma's gratis op VRT MAX.</p>
+                    </div>
+                </div>
+                <a href="https://www.vrt.be/vrtmax/ketnet/" target="_blank" rel="noopener noreferrer" class="btn-bounce shrink-0 bg-ketnetBlue hover:bg-sky-400 text-white font-display font-bold px-6 py-3.5 rounded-2xl shadow-playful flex items-center gap-2">
+                    Naar Ketnet op VRT MAX <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. PROGRAMMA'S OVERZICHT -->
+        <section id="programmas" class="scroll-mt-24">
+            <div class="text-center mb-8">
+                <span class="bg-ketnetOrange/15 text-ketnetOrange font-extrabold px-4 py-1 rounded-full text-sm uppercase tracking-wider">Kijkplezier</span>
+                <h2 class="text-3xl sm:text-5xl font-display font-bold text-slate-900 mt-2">Top Ketnet-Programma's</h2>
+                <p class="text-slate-600 mt-2 text-lg">Kies een categorie en klik op een reeks voor meer info!</p>
+            </div>
+
+            <!-- Filterknoppen -->
+            <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-10" id="filter-container">
+                <button data-filter="Alles" class="filter-btn active btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-ketnetOrange text-white shadow-playful">
+                    🌈 Alles
+                </button>
+                <button data-filter="Fictie" class="filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-700 hover:bg-ketnetPurple hover:text-white shadow-playful border-2 border-slate-100">
+                    🧛‍♂️ Fictie
+                </button>
+                <button data-filter="Nieuws & Avontuur" class="filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-700 hover:bg-ketnetBlue hover:text-white shadow-playful border-2 border-slate-100">
+                    🌍 Nieuws & Avontuur
+                </button>
+                <button data-filter="Muziek" class="filter-btn btn-bounce px-5 py-2.5 rounded-2xl font-display font-bold text-base bg-white text-slate-700 hover:bg-ketnetPink hover:text-white shadow-playful border-2 border-slate-100">
+                    🎤 Muziek
+                </button>
+            </div>
+
+            <!-- Grid met Programma Kaartjes -->
+            <div id="programs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Kaartjes worden dynamisch geladen via JavaScript -->
+            </div>
+        </section>
+
+        <!-- 3. KETNET-WRAPPERS SECTIE -->
+        <section id="wrappers" class="scroll-mt-24 bg-ketnetBlue/10 rounded-[2.5rem] p-6 sm:p-12 border-4 border-ketnetBlue/30">
+            <div class="text-center mb-10">
+                <span class="bg-ketnetBlue text-white font-extrabold px-4 py-1 rounded-full text-sm uppercase tracking-wider">De Bende van Ketnet</span>
+                <h2 class="text-3xl sm:text-5xl font-display font-bold text-slate-900 mt-2">Onze Ketnet-Wrappers</h2>
+                <p class="text-slate-700 mt-2 text-lg">Ze praten alles aan elkaar en halen de gekste stoten uit. Geef ze een high-five!</p>
+            </div>
+
+            <div id="wrappers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Wrappers worden geladen via JS -->
+            </div>
+        </section>
+
+        <!-- 4. INTERACTIEVE KETNET FAN-QUIZ -->
+        <section id="quiz" class="scroll-mt-24">
+            <div class="max-w-3xl mx-auto bg-white rounded-[2.5rem] shadow-card border-4 border-ketnetPink overflow-hidden">
+                <div class="bg-ketnetPink text-white p-6 sm:p-8 text-center">
+                    <span class="bg-white/20 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider">Test je kennis</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold mt-2">De Grote Ketnet Fan-Quiz! 🧠✨</h2>
+                    <p class="text-white/90 mt-1">Beantwoord 5 vragen en ontdek of jij een echte Ketnet-expert bent!</p>
+                </div>
+
+                <div class="p-6 sm:p-10" id="quiz-container">
+                    <!-- Voortgangsbalk -->
+                    <div id="quiz-progress-wrapper" class="mb-6">
+                        <div class="flex justify-between text-sm font-bold text-slate-600 mb-2">
+                            <span id="question-counter">Vraag 1 van 5</span>
+                            <span id="score-tracker" class="text-ketnetPink">Score: 0</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-4 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                            <div id="progress-bar" class="bg-gradient-to-r from-ketnetOrange to-ketnetPink h-full rounded-full transition-all duration-300" style="width: 20%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Vraag & Antwoorden -->
+                    <div id="quiz-question-area">
+                        <h3 id="question-text" class="text-xl sm:text-2xl font-display font-bold text-slate-900 mb-6">
+                            Vraag wordt geladen...
+                        </h3>
+                        <div id="options-container" class="space-y-3">
+                            <!-- Antwoordknoppen komen hier -->
+                        </div>
+                        <div id="feedback-box" class="hidden mt-6 p-4 rounded-2xl font-bold text-center text-lg"></div>
+                        <div class="mt-6 text-right">
+                            <button id="next-question-btn" class="hidden btn-bounce bg-ketnetBlue text-white font-display font-bold px-6 py-3 rounded-2xl shadow-playful">
+                                Volgende vraag <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Resultaatscherm (verborgen tijdens quiz) -->
+                    <div id="quiz-result-area" class="hidden text-center py-4">
+                        <div id="result-emoji" class="text-6xl mb-4 animate-bounce">🏆</div>
+                        <h3 id="result-title" class="text-3xl font-display font-bold text-slate-900 mb-2">Super gedaan!</h3>
+                        <p id="result-score-text" class="text-xl font-bold text-ketnetPink mb-4">Je behaalde 5 op 5!</p>
+                        <p id="result-message" class="text-slate-600 max-w-md mx-auto mb-8 text-lg">
+                            Wauw, jij kent Ketnet van binnen en van buiten!
+                        </p>
+                        <button id="restart-quiz-btn" class="btn-bounce bg-ketnetOrange text-white font-display font-bold text-lg px-8 py-3.5 rounded-2xl shadow-playful">
+                            <i class="fa-solid fa-rotate-right mr-2"></i> Speel opnieuw!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. INTERACTIEVE FAN-MUUR (GASTENBOEK) -->
+        <section id="fanmuur" class="scroll-mt-24">
+            <div class="text-center mb-10">
+                <span class="bg-ketnetGreen/20 text-ketnetGreen font-extrabold px-4 py-1 rounded-full text-sm uppercase tracking-wider">Laat van je horen</span>
+                <h2 class="text-3xl sm:text-5xl font-display font-bold text-slate-900 mt-2">De Ketnet Fan-Muur 📌</h2>
+                <p class="text-slate-600 mt-2 text-lg">Plak jouw eigen vrolijke sticker op onze muur en vertel wat jouw lievelingsprogramma is!</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Formulier (Links) -->
+                <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-[2rem] shadow-card border-4 border-ketnetYellow">
+                    <h3 class="text-2xl font-display font-bold text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="bg-ketnetYellow p-2 rounded-xl text-xl">✍️</span> Plak jouw sticker!
+                    </h3>
+                    <form id="fanwall-form" class="space-y-4">
+                        <div>
+                            <label for="fan-name" class="block font-bold text-slate-700 mb-1">Jouw voornaam of bijnaam</label>
+                            <input type="text" id="fan-name" required maxlength="25" placeholder="Bijv. SuperFanLotte"
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-ketnetOrange focus:outline-none font-semibold">
+                        </div>
+                        <div>
+                            <label for="fan-show" class="block font-bold text-slate-700 mb-1">Favoriet programma</label>
+                            <select id="fan-show" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-ketnetOrange focus:outline-none font-semibold bg-white">
+                                <option value="#LikeMe">🎤 #LikeMe</option>
+                                <option value="Nachtwacht">🧛‍♂️ Nachtwacht</option>
+                                <option value="Karrewiet">🌍 Karrewiet</option>
+                                <option value="Campus 12">🥊 Campus 12</option>
+                                <option value="Helden">🛠️ Helden</option>
+                                <option value="Schijtluizen">😂 Schijtluizen</option>
+                                <option value="Waiko">👽 Waiko</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="fan-message" class="block font-bold text-slate-700 mb-1">Jouw berichtje</label>
+                            <textarea id="fan-message" required rows="3" maxlength="160" placeholder="Schrijf hier iets leuks voor andere Ketnet-fans..."
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-ketnetOrange focus:outline-none font-semibold resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full btn-bounce bg-ketnetGreen text-white font-display font-bold text-lg py-3.5 rounded-2xl shadow-playful flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Plak op de Fan-Muur!
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Stickers Overzicht (Rechts) -->
+                <div class="lg:col-span-7">
+                    <div id="stickers-wall" class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <!-- Stickers worden hier getoond -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 6. FOOTER MET DISCLAIMER -->
+    <footer class="bg-slate-900 text-white mt-20 border-t-8 border-ketnetOrange">
+        <div class="max-w-6xl mx-auto px-4 py-10 text-center space-y-4">
+            <div class="inline-block bg-ketnetOrange text-white font-display font-bold text-2xl px-4 py-1 rounded-xl transform -rotate-2">
+                KETNET <span class="text-ketnetYellow">FANS</span>
+            </div>
+            <p class="text-slate-300 max-w-xl mx-auto text-sm sm:text-base leading-relaxed">
+                <strong>Disclaimer:</strong> Dit is een onofficiële fansite gemaakt door en voor enthousiaste Ketnet-kijkers in Vlaanderen. Deze website is niet verbonden aan, gesponsord door of officieel onderdeel van Ketnet of de VRT. Voor het officiële aanbod kan je terecht op <a href="https://www.vrt.be/vrtmax/ketnet/" target="_blank" rel="noopener noreferrer" class="text-ketnetYellow underline hover:text-white">Ketnet op VRT MAX</a>.
+            </p>
+            <div class="text-xs text-slate-400 pt-2">
+                Gemaakt met ❤️, veel kleur en Vlaamse gezelligheid!
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL VOOR PROGRAMMA & EVENEMENT DETAILS -->
+    <div id="program-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white rounded-[2rem] max-w-lg w-full overflow-hidden shadow-2xl border-4 border-ketnetYellow transform transition-all scale-95 opacity-0" id="modal-box">
+            <div id="modal-header-bg" class="p-6 text-white relative">
+                <button id="close-modal-btn" aria-label="Sluit venster" class="absolute top-4 right-4 bg-white/25 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div id="modal-emoji" class="text-5xl mb-2">🎤</div>
+                <span id="modal-category" class="bg-white/25 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider">Muziek</span>
+                <h3 id="modal-title" class="text-3xl font-display font-bold mt-2">Programma Titel</h3>
+            </div>
+            <div class="p-6 space-y-4">
+                <p id="modal-description" class="text-slate-700 text-base sm:text-lg leading-relaxed">
+                    Uitgebreide beschrijving.
+                </p>
+                <div class="bg-slate-100 p-4 rounded-2xl space-y-2.5 text-sm">
+                    <div class="flex items-start gap-2 font-bold text-slate-800">
+                        <i id="modal-info1-icon" class="fa-solid fa-users text-ketnetOrange mt-0.5"></i>
+                        <span id="modal-info1-label" class="shrink-0">Hoofdpersonages:</span>
+                        <span id="modal-characters" class="font-normal text-slate-600">...</span>
+                    </div>
+                    <div class="flex items-start gap-2 font-bold text-slate-800">
+                        <i id="modal-info2-icon" class="fa-solid fa-lightbulb text-ketnetBlue mt-0.5"></i>
+                        <span id="modal-info2-label" class="shrink-0">Leuk weetje:</span>
+                        <span id="modal-funfact" class="font-normal text-slate-600">...</span>
+                    </div>
+                </div>
+                <div class="pt-2 flex flex-wrap items-center justify-end gap-3">
+                    <a id="modal-vrtmax-link" href="https://www.vrt.be/vrtmax/ketnet/" target="_blank" rel="noopener noreferrer" class="hidden btn-bounce bg-ketnetBlue text-white font-display font-bold px-5 py-2.5 rounded-xl shadow-playful items-center gap-2">
+                        Ketnet op VRT MAX <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                    <button id="modal-ok-btn" class="btn-bounce bg-ketnetOrange text-white font-display font-bold px-6 py-2.5 rounded-xl shadow-playful">
+                        Super, begrepen! 👍
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGICA -->
+    <script>
+        // --- 0. DATA VOOR EVENEMENTEN & TOURS ---
+        const eventsData = [
+            {
+                id: 101,
+                title: "De Intrede van de Sint",
+                category: "Expo & Seizoen",
+                dateLabel: "November • Live in Antwerpen & op Ketnet",
+                location: "Steenplein Antwerpen & VRT MAX",
+                emoji: "⛵",
+                color: "bg-red-600",
+                badgeColor: "bg-red-100 text-red-700",
+                shortDesc: "Sinterklaas en zijn Pieten meren aan met de stoomboot! Een magisch feest met alle Ketnet-wrappers.",
+                fullDesc: "Het spannendste moment van het najaar! Samen met alle Ketnet-wrappers en duizenden kinderen verwelkomen we Sinterklaas en de Pieten wanneer de stoomboot aanmeert in Vlaanderen.",
+                practicalInfo: "Gratis langs de kade of live te volgen via Ketnet en VRT MAX.",
+                highlight: "Zing mee met alle bekende Sinterklaasliedjes en spot Bart Peeters en Conny!"
+            },
+            {
+                id: 102,
+                title: "HALLO KROKET! Live op Boektopia",
+                category: "Shows & Live",
+                dateLabel: "Najaar • Kortrijk Xpo",
+                location: "Boektopia, Kortrijk",
+                emoji: "📚",
+                color: "bg-ketnetOrange",
+                badgeColor: "bg-orange-100 text-ketnetOrange",
+                shortDesc: "De gezelligste live-uitzending en boekenpret met jouw favoriete wrappers en auteurs!",
+                fullDesc: "Tijdens Boektopia strijkt Ketnet neer met HALLO KROKET! Live. Verwacht knotsgekke spelletjes, signeersessies, voorleesmomenten en ontmoetingen met bekende Ketnet-gezichten.",
+                practicalInfo: "Doorlopend tijdens Boektopia in Kortrijk Xpo.",
+                highlight: "Ideaal voor echte boekenwurmen en fans van gekke Ketnet-challenges!"
+            },
+            {
+                id: 103,
+                title: "Nerdland voor Kleine Nerds: de show",
+                category: "Shows & Live",
+                dateLabel: "Tournee door Vlaanderen",
+                location: "Diverse culturele centra in Vlaanderen",
+                emoji: "🧪",
+                color: "bg-ketnetBlue",
+                badgeColor: "bg-sky-100 text-ketnetBlue",
+                shortDesc: "Knallende proefjes, gekke uitvindingen en wetenschap waar je mond van openvalt!",
+                fullDesc: "Lieven Scheire en Hetty Helsmoortel duiken samen met jonge speurneuzen in de wonderlijke wereld van wetenschap en technologie. Met spectaculaire experimenten op het podium!",
+                practicalInfo: "Voor nieuwsgierige kinderen vanaf 6 jaar en hun familie.",
+                highlight: "Pas op voor rookwolken, robots en verrassende knallen op het podium!"
+            },
+            {
+                id: 104,
+                title: "De KetnetBand on Tour",
+                category: "Muziek & Tour",
+                dateLabel: "Heel het jaar door • Vlaanderen",
+                location: "Festivals, stadspleinen & zalen",
+                emoji: "🎸",
+                color: "bg-ketnetPink",
+                badgeColor: "bg-pink-100 text-ketnetPink",
+                shortDesc: "Dansen, springen en meezingen op de allergrootste Ketnet-hits en popmedleys!",
+                fullDesc: "De KetnetBand brengt overal waar ze komen een gigantisch feest! Samen met de Ketnet-wrappers zetten ze elk plein en elke zaal op stelten met de leukste Ketnet-classics.",
+                practicalInfo: "Check de tourkalender en trek je beste dansschoenen aan!",
+                highlight: "Inclusief de grootste meezingers van #LikeMe, Nachtwacht en Ketnet Musical!"
+            },
+            {
+                id: 105,
+                title: "Nachtwacht Halloween & Zomerfestival",
+                category: "Expo & Seizoen",
+                dateLabel: "Zomer & Herfstvakantie",
+                location: "Plopsaland De Panne & Vlaamse kust",
+                emoji: "🎃",
+                color: "bg-ketnetPurple",
+                badgeColor: "bg-purple-100 text-ketnetPurple",
+                shortDesc: "Van zonnige strandfeesten in de zomer tot griezelige avonturen met Vladimir, Wilko en Keelin!",
+                fullDesc: "In de zomer viert Ketnet feest tijdens het Ketnet Zomerfestival vol optredens en animatie. In de herfst nemen de helden van Nachtwacht het over voor een spannend Halloween-avontuur!",
+                practicalInfo: "Seizoensevenementen tijdens de schoolvakanties.",
+                highlight: "Ontmoet de helden van Schemermeer en geniet van exclusieve shows!"
+            }
+        ];
+
+        let savedEventIds = new Set();
+
+        // --- 1. DATA VOOR PROGRAMMA'S ---
+        const programsData = [
+            {
+                id: 1,
+                title: "#LikeMe",
+                category: "Muziek",
+                emoji: "🎤",
+                color: "bg-ketnetPink",
+                badgeColor: "bg-pink-100 text-ketnetPink",
+                shortDesc: "Muzikale reeks vol vriendschap, liefde en Vlaamse klassiekers in een nieuw jasje!",
+                fullDesc: "Wanneer Caro met haar ouders naar Antwerpen verhuist, komt ze terecht op het SAS. Samen met Vince, Yemi, Camille en Kyra beleeft ze spannende schoolavonturen vol dans en zang.",
+                characters: "Caro, Vince, Yemi, Camille, Kyra",
+                funFact: "De cast gaf al meerdere uitverkochte concerten in het Sportpaleis!"
+            },
+            {
+                id: 2,
+                title: "Nachtwacht",
+                category: "Fictie",
+                emoji: "🧛‍♂️",
+                color: "bg-ketnetPurple",
+                badgeColor: "bg-purple-100 text-ketnetPurple",
+                shortDesc: "Een vampier, een weerwolf en een elf beschermen het dorp Schemermeer tegen het kwaad.",
+                fullDesc: "Vladimir, Wilko en Keelin lijken gewone tieners, maar zodra er een wezen uit de onderwereld opduikt, vormen ze samen de magische Nachtwacht!",
+                characters: "Vladimir, Wilko, Keelin, Vega",
+                funFact: "De geheime schuilplaats van de Nachtwacht bevindt zich onder een antiekwinkel."
+            },
+            {
+                id: 3,
+                title: "Karrewiet",
+                category: "Nieuws & Avontuur",
+                emoji: "🌍",
+                color: "bg-ketnetBlue",
+                badgeColor: "bg-sky-100 text-ketnetBlue",
+                shortDesc: "Het dagelijkse jeugdjournaal op maat van kinderen en jongeren.",
+                fullDesc: "Wat gebeurt er in Vlaanderen en de rest van de wereld? De ankers van Karrewiet leggen het elke dag helder, boeiend en soms met een knipoog uit.",
+                characters: "Jens, Amber, Maurane, Mariam",
+                funFact: "Elk jaar kiest Karrewiet samen met de kijkers hét Kinderwoord van het Jaar!"
+            },
+            {
+                id: 4,
+                title: "Campus 12",
+                category: "Fictie",
+                emoji: "🥊",
+                color: "bg-ketnetOrange",
+                badgeColor: "bg-orange-100 text-ketnetOrange",
+                shortDesc: "Boksen, muziek en grote geheimen op een bruisende jongerencampus.",
+                fullDesc: "Noah wil wereldkampioen boksen worden, maar wanneer zijn zusje Louise spoorloos verdwijnt, zet hij samen met zijn vrienden alles op alles om haar te vinden.",
+                characters: "Noah, Sam, Bo, Hanne, Louise",
+                funFact: "De acteurs moesten voor de opnames maandenlang echte bokstraining volgen."
+            },
+            {
+                id: 5,
+                title: "Helden",
+                category: "Nieuws & Avontuur",
+                emoji: "🛠️",
+                color: "bg-ketnetGreen",
+                badgeColor: "bg-lime-100 text-ketnetGreen",
+                shortDesc: "Vier vrienden gaan geen enkele uitdaging uit de weg en bouwen de gekste constructies!",
+                fullDesc: "Sieg, Maureen, Nico en Dempsey testen de zotste dingen uit, overwinnen hun angsten en verrassen kinderen met onvergetelijke avonturen.",
+                characters: "Sieg, Maureen, Nico, Dempsey",
+                funFact: "Hun bekende strijdkreet klinkt door heel Vlaanderen: 'Wij zijn Helden!'"
+            },
+            {
+                id: 6,
+                title: "Schijtluizen",
+                category: "Fictie",
+                emoji: "😂",
+                color: "bg-ketnetYellow text-slate-900",
+                badgeColor: "bg-amber-100 text-amber-800",
+                shortDesc: "Hilarische sketches waarin kinderen en volwassenen de rollen omdraaien!",
+                fullDesc: "Wat gebeurt er als kinderen de baas zijn in het ziekenhuis, op school of in een restaurant? In Schijtluizen lopen volwassenen helemaal in de val!",
+                characters: "De jonge topacteurs van de Schijtluizen-bende",
+                funFact: "De volwassenen in de verborgen-camera-fragmenten weten echt van niets!"
+            },
+            {
+                id: 7,
+                title: "Waiko",
+                category: "Fictie",
+                emoji: "👽",
+                color: "bg-indigo-600",
+                badgeColor: "bg-indigo-100 text-indigo-700",
+                shortDesc: "Op een kermis gebeuren buitenaardse dingen wanneer een echte alien neerstort!",
+                fullDesc: "Nova is een buitenaards meisje dat strandt op een kermis. Samen met haar nieuwe aardse vrienden probeert ze haar ruimteschip te repareren zonder ontdekt te worden.",
+                characters: "Nova, Ion, Otto, Bibi",
+                funFact: "Een groot deel van de reeks werd opgenomen tussen echte kermisattracties!"
+            }
+        ];
+
+        // --- 2. DATA VOOR KETNET-WRAPPERS ---
+        const wrappersData = [
+            {
+                name: "Jean-Romy",
+                emoji: "🎬",
+                color: "border-ketnetOrange",
+                bgBadge: "bg-ketnetOrange",
+                fact: "Jean-Romy Manzila brengt mega veel enthousiasme, humor en coole vibes naar de Ketnet-studio!",
+                highFives: 164
+            },
+            {
+                name: "Lee",
+                emoji: "🌟",
+                color: "border-ketnetPink",
+                bgBadge: "bg-ketnetPink",
+                fact: "Altijd klaar voor een zotte uitdaging, creatieve knutselideetjes en een dikke glimlach!",
+                highFives: 151
+            },
+            {
+                name: "Emma",
+                emoji: "🎤",
+                color: "border-ketnetBlue",
+                bgBadge: "bg-ketnetBlue",
+                fact: "Gek op muziek, feestjes en de leukste babbels met Ketnetters uit heel Vlaanderen!",
+                highFives: 173
+            },
+            {
+                name: "Thomas",
+                emoji: "🎸",
+                color: "border-ketnetGreen",
+                bgBadge: "bg-ketnetGreen",
+                fact: "Een echte sfeermaker die altijd klaarstaat voor een grapje en gekke danspasjes.",
+                highFives: 148
+            },
+            {
+                name: "Melanie",
+                emoji: "⚡",
+                color: "border-ketnetPurple",
+                bgBadge: "bg-ketnetPurple",
+                fact: "Bruist van energie en duikt met veel plezier in elk nieuw Ketnet-avontuur!",
+                highFives: 159
+            }
+        ];
+
+        // --- 3. DATA VOOR DE FAN-QUIZ ---
+        const quizQuestions = [
+            {
+                question: "Welke drie magische wezens vormen samen de Nachtwacht?",
+                options: [
+                    "Een vampier, een weerwolf en een elf",
+                    "Een heks, een draak en een tovenaar",
+                    "Een spook, een zombie en een fee",
+                    "Een alien, een robot en een ninja"
+                ],
+                correct: 0
+            },
+        // --- RENDER EVENEMENTEN ---
+        const eventsGrid = document.getElementById('events-grid');
+        const eventFilterBtns = document.querySelectorAll('.event-filter-btn');
+        const savedEventsCountEl = document.getElementById('saved-events-count');
+        let currentEventFilter = 'Alle';
+
+        function renderEvents(filter = 'Alle') {
+            currentEventFilter = filter;
+            eventsGrid.innerHTML = '';
+            const filtered = filter === 'Alle'
+                ? eventsData
+                : eventsData.filter(ev => ev.category === filter);
+
+            filtered.forEach(ev => {
+                const isSaved = savedEventIds.has(ev.id);
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-3xl shadow-card overflow-hidden border-2 border-slate-100 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1.5';
+                card.innerHTML = `
+                    <div>
+                        <div class="${ev.color} h-32 flex items-center justify-center text-6xl relative">
+                            <span class="drop-shadow-md transform hover:scale-110 transition-transform">${ev.emoji}</span>
+                            <button onclick="toggleSaveEvent(${ev.id})" aria-label="Bewaar herinnering" class="absolute top-3 right-3 px-3 py-1.5 rounded-full text-xs font-extrabold shadow-md transition-all flex items-center gap-1.5 ${isSaved ? 'bg-ketnetYellow text-slate-900 scale-105' : 'bg-white/90 text-slate-800 hover:bg-ketnetYellow'}">
+                                <i class="fa-${isSaved ? 'solid' : 'regular'} fa-bell ${isSaved ? 'text-ketnetOrange' : ''}"></i>
+                                <span>${isSaved ? 'Bewaard!' : 'Herinner mij'}</span>
+                            </button>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                <span class="inline-block ${ev.badgeColor} text-xs font-extrabold uppercase px-3 py-1 rounded-full">
+                                    ${ev.category}
+                                </span>
+                                <span class="text-xs font-bold text-slate-500">
+                                    <i class="fa-solid fa-location-dot text-ketnetOrange mr-1"></i>${ev.location}
+                                </span>
+                            </div>
+                            <h3 class="text-2xl font-display font-bold text-slate-900 mb-1">${ev.title}</h3>
+                            <div class="text-xs font-extrabold text-ketnetBlue mb-3">
+                                <i class="fa-regular fa-calendar mr-1"></i> ${ev.dateLabel}
+                            </div>
+                            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">${ev.shortDesc}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2 flex gap-2">
+                        <button onclick="openEventModal(${ev.id})" class="flex-1 btn-bounce bg-slate-900 hover:bg-ketnetOrange text-white font-display font-bold py-3 px-4 rounded-2xl shadow-playful flex items-center justify-center gap-2 transition-colors">
+                            <i class="fa-solid fa-ticket"></i> Evenement-details
+                        </button>
+                    </div>
+                `;
+                eventsGrid.appendChild(card);
+            });
+        }
+
+        function toggleSaveEvent(id) {
+            if (savedEventIds.has(id)) {
+                savedEventIds.delete(id);
+            } else {
+                savedEventIds.add(id);
+            }
+            savedEventsCountEl.textContent = savedEventIds.size;
+            renderEvents(currentEventFilter);
+        }
+
+        eventFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                eventFilterBtns.forEach(b => {
+                    b.classList.remove('bg-slate-900', 'text-white');
+                    b.classList.add('bg-white', 'text-slate-800');
+                });
+                btn.classList.remove('bg-white', 'text-slate-800');
+                btn.classList.add('bg-slate-900', 'text-white');
+                renderEvents(btn.dataset.eventFilter);
+            });
+        });
+
+        // --- RENDER PROGRAMMA'S ---
+        const programsGrid = document.getElementById('programs-grid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function renderPrograms(filter = 'Alles') {
+            programsGrid.innerHTML = '';
+            const filtered = filter === 'Alles'
+                ? programsData
+                : programsData.filter(p => p.category === filter);
+
+            filtered.forEach(prog => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-3xl shadow-card overflow-hidden border-2 border-slate-100 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1.5';
+                card.innerHTML = `
+                    <div>
+                        <div class="${prog.color} h-32 flex items-center justify-center text-6xl relative">
+                            <span class="drop-shadow-md transform hover:scale-110 transition-transform">${prog.emoji}</span>
+                        </div>
+                        <div class="p-6">
+                            <span class="inline-block ${prog.badgeColor} text-xs font-extrabold uppercase px-3 py-1 rounded-full mb-2">
+                                ${prog.category}
+                            </span>
+                            <h3 class="text-2xl font-display font-bold text-slate-900 mb-2">${prog.title}</h3>
+                            <p class="text-slate-600 text-sm sm:text-base leading-relaxed">${prog.shortDesc}</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-2">
+                        <button onclick="openProgramModal(${prog.id})" class="w-full btn-bounce bg-slate-900 hover:bg-ketnetOrange text-white font-display font-bold py-3 px-4 rounded-2xl shadow-playful flex items-center justify-center gap-2 transition-colors">
+                            <i class="fa-solid fa-circle-info"></i> Bekijk details
+                        </button>
+                    </div>
+                `;
+                programsGrid.appendChild(card);
+            });
+        }
+
+        // Filter knop events
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Reset stijlen
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-ketnetOrange', 'text-white');
+                    b.classList.add('bg-white', 'text-slate-700');
+                });
+                // Actieve stijl
+                btn.classList.remove('bg-white', 'text-slate-700');
+                btn.classList.add('bg-ketnetOrange', 'text-white');
+
+                renderPrograms(btn.dataset.filter);
+            });
+        });
+
+        // --- MODAL LOGICA ---
+        const modal = document.getElementById('program-modal');
+        const modalBox = document.getElementById('modal-box');
+
+        function openProgramModal(id) {
+            const prog = programsData.find(p => p.id === id);
+            if (!prog) return;
+
+            document.getElementById('modal-header-bg').className = `${prog.color} p-6 text-white relative`;
+            if (prog.title === 'Schijtluizen') {
+                document.getElementById('modal-header-bg').classList.replace('text-white', 'text-slate-900');
+            }
+            document.getElementById('modal-emoji').textContent = prog.emoji;
+            document.getElementById('modal-category').textContent = prog.category;
+            document.getElementById('modal-title').textContent = prog.title;
+            document.getElementById('modal-description').textContent = prog.fullDesc;
+
+            document.getElementById('modal-info1-icon').className = 'fa-solid fa-users text-ketnetOrange mt-0.5';
+            document.getElementById('modal-info1-label').textContent = 'Hoofdpersonages:';
+            document.getElementById('modal-characters').textContent = prog.characters;
+
+            document.getElementById('modal-info2-icon').className = 'fa-solid fa-lightbulb text-ketnetBlue mt-0.5';
+            document.getElementById('modal-info2-label').textContent = 'Leuk weetje:';
+            document.getElementById('modal-funfact').textContent = prog.funFact;
+
+            const vrtLink = document.getElementById('modal-vrtmax-link');
+            vrtLink.classList.remove('hidden');
+            vrtLink.classList.add('inline-flex');
+
+            showModalAnimation();
+        }
+
+        function openEventModal(id) {
+            const ev = eventsData.find(e => e.id === id);
+            if (!ev) return;
+
+            document.getElementById('modal-header-bg').className = `${ev.color} p-6 text-white relative`;
+            document.getElementById('modal-emoji').textContent = ev.emoji;
+            document.getElementById('modal-category').textContent = `${ev.category} • ${ev.dateLabel}`;
+            document.getElementById('modal-title').textContent = ev.title;
+            document.getElementById('modal-description').textContent = ev.fullDesc;
+
+            document.getElementById('modal-info1-icon').className = 'fa-solid fa-location-dot text-ketnetOrange mt-0.5';
+            document.getElementById('modal-info1-label').textContent = 'Praktisch:';
+            document.getElementById('modal-characters').textContent = `${ev.location} — ${ev.practicalInfo}`;
+
+            document.getElementById('modal-info2-icon').className = 'fa-solid fa-star text-ketnetPink mt-0.5';
+            document.getElementById('modal-info2-label').textContent = 'Niet te missen:';
+            document.getElementById('modal-funfact').textContent = ev.highlight;
+
+            const vrtLink = document.getElementById('modal-vrtmax-link');
+            vrtLink.classList.remove('hidden');
+            vrtLink.classList.add('inline-flex');
+
+            showModalAnimation();
+        }
+
+        function showModalAnimation() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95', 'opacity-0');
+                modalBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeProgramModal() {
+            modalBox.classList.remove('scale-100', 'opacity-100');
+            modalBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 150);
+        }
+
+        document.getElementById('close-modal-btn').addEventListener('click', closeProgramModal);
+        document.getElementById('modal-ok-btn').addEventListener('click', closeProgramModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeProgramModal();
+        });
+
+        // --- RENDER WRAPPERS ---
+        const wrappersGrid = document.getElementById('wrappers-grid');
+
+        function renderWrappers() {
+            wrappersGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5';
+            wrappersGrid.innerHTML = '';
+            wrappersData.forEach((w, index) => {
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-3xl p-6 shadow-card border-b-8 ${w.color} text-center flex flex-col justify-between`;
+                card.innerHTML = `
+                    <div>
+                        <div class="w-20 h-20 mx-auto ${w.bgBadge} text-white rounded-full flex items-center justify-center text-4xl shadow-md mb-4 transform hover:rotate-12 transition-transform">
+                            ${w.emoji}
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-slate-900">${w.name}</h3>
+                        <p class="text-slate-600 text-sm mt-2 mb-6 leading-relaxed">${w.fact}</p>
+                    </div>
+                    <div>
+                        <button onclick="giveHighFive(${index}, this)" class="w-full btn-bounce bg-ketnetYellow hover:bg-amber-400 text-slate-900 font-display font-bold py-2.5 px-4 rounded-2xl shadow-playful flex items-center justify-center gap-2">
+                            <span>✋</span> Geef een high-five!
+                            <span id="hf-count-${index}" class="bg-white px-2.5 py-0.5 rounded-full text-sm font-extrabold text-ketnetOrange ml-1">
+                                ${w.highFives}
+                            </span>
+                        </button>
+                    </div>
+                `;
+                wrappersGrid.appendChild(card);
+            });
+        }
+
+        function giveHighFive(index, btnElement) {
+            wrappersData[index].highFives++;
+            const badge = document.getElementById(`hf-count-${index}`);
+            badge.textContent = wrappersData[index].highFives;
+
+            // Kleine visuele pop-animatie op de teller
+            badge.classList.add('scale-125', 'bg-ketnetPink', 'text-white');
+            setTimeout(() => {
+                badge.classList.remove('scale-125', 'bg-ketnetPink', 'text-white');
+            }, 250);
+        }
+
+        // --- QUIZ LOGICA ---
+        let currentQuestionIdx = 0;
+        let quizScore = 0;
+        let answeredCurrent = false;
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const nextBtn = document.getElementById('next-question-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const scoreTracker = document.getElementById('score-tracker');
+        const progressBar = document.getElementById('progress-bar');
+
+        function loadQuizQuestion() {
+            answeredCurrent = false;
+            feedbackBox.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            const q = quizQuestions[currentQuestionIdx];
+            questionCounter.textContent = `Vraag ${currentQuestionIdx + 1} van ${quizQuestions.length}`;
+            scoreTracker.textContent = `Score: ${quizScore}`;
+            progressBar.style.width = `${((currentQuestionIdx + 1) / quizQuestions.length) * 100}%`;
+
+            questionText.textContent = q.question;
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-ketnetBlue hover:bg-sky-50 font-bold text-slate-800 transition-all flex items-center gap-3';
+                const letters = ['A', 'B', 'C', 'D'];
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-display flex items-center justify-center shrink-0">${letters[idx]}</span>
+                    <span>${opt}</span>
+                `;
+                btn.addEventListener('click', () => handleAnswer(idx, btn));
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(selectedIdx, clickedBtn) {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+
+            const q = quizQuestions[currentQuestionIdx];
+            const allButtons = optionsContainer.querySelectorAll('button');
+
+            allButtons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.remove('border-slate-200', 'hover:border-ketnetBlue', 'hover:bg-sky-50');
+                    btn.classList.add('bg-ketnetGreen/20', 'border-ketnetGreen', 'text-slate-900');
+                } else if (idx === selectedIdx && selectedIdx !== q.correct) {
+                    btn.classList.remove('border-slate-200');
+                    btn.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+                }
+            });
+
+            feedbackBox.classList.remove('hidden', 'bg-ketnetGreen/20', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (selectedIdx === q.correct) {
+                quizScore++;
+                scoreTracker.textContent = `Score: ${quizScore}`;
+                feedbackBox.textContent = '🎉 Joepie! Helemaal juist!';
+                feedbackBox.classList.add('bg-ketnetGreen/20', 'text-green-800');
+            } else {
+                feedbackBox.textContent = `Oeps, net niet! Het juiste antwoord was: "${q.options[q.correct]}"`;
+                feedbackBox.classList.add('bg-red-100', 'text-red-800');
+            }
+
+            nextBtn.textContent = currentQuestionIdx === quizQuestions.length - 1 ? 'Bekijk mijn resultaat! 🏆' : 'Volgende vraag ➡️';
+            nextBtn.classList.remove('hidden');
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < quizQuestions.length) {
+                loadQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        });
+
+        function showQuizResults() {
+            document.getElementById('quiz-progress-wrapper').classList.add('hidden');
+            document.getElementById('quiz-question-area').classList.add('hidden');
+            const resultArea = document.getElementById('quiz-result-area');
+            resultArea.classList.remove('hidden');
+
+            document.getElementById('result-score-text').textContent = `Je behaalde ${quizScore} op ${quizQuestions.length}!`;
+
+            if (quizScore === 5) {
+                document.getElementById('result-emoji').textContent = '👑';
+                document.getElementById('result-title').textContent = 'Ongelooflijk! 100% Ketnet-Kampioen!';
+                document.getElementById('result-message').textContent = 'Jij weet echt álles over Ketnet. De wrappers zouden trots op je zijn!';
+            } else if (quizScore >= 3) {
+                document.getElementById('result-emoji').textContent = '🎉';
+                document.getElementById('result-title').textContent = 'Super goed gedaan, Ketnet-fan!';
+                document.getElementById('result-message').textContent = 'Een prachtige score! Je kent jouw favoriete programma’s door en door.';
+            } else {
+                document.getElementById('result-emoji').textContent = '📺';
+                document.getElementById('result-title').textContent = 'Goed geprobeerd!';
+                document.getElementById('result-message').textContent = 'Tijd voor een gezellig avondje Ketnet kijken en daarna nog eens proberen!';
+            }
+
+            // Confetti afvuren!
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FF5E00', '#FFD500', '#009FE3', '#E6007E', '#76B82A']
+                });
+            }
+        }
+
+        document.getElementById('restart-quiz-btn').addEventListener('click', () => {
+            currentQuestionIdx = 0;
+            quizScore = 0;
+            document.getElementById('quiz-progress-wrapper').classList.remove('hidden');
+            document.getElementById('quiz-question-area').classList.remove('hidden');
+            document.getElementById('quiz-result-area').classList.add('hidden');
+            loadQuizQuestion();
+        });
+
+        // --- FAN-MUUR LOGICA ---
+        const stickersWall = document.getElementById('stickers-wall');
+        const fanwallForm = document.getElementById('fanwall-form');
+
+        const stickerStyles = [
+            { bg: 'bg-pink-100 border-ketnetPink', rot: '-rotate-1' },
+            { bg: 'bg-sky-100 border-ketnetBlue', rot: 'rotate-1' },
+            { bg: 'bg-amber-100 border-ketnetOrange', rot: '-rotate-2' },
+            { bg: 'bg-lime-100 border-ketnetGreen', rot: 'rotate-2' },
+            { bg: 'bg-purple-100 border-ketnetPurple', rot: '-rotate-1' }
+        ];
+
+        function renderStickers() {
+            stickersWall.innerHTML = '';
+            fanStickers.forEach(s => {
+                const sticker = document.createElement('div');
+                sticker.className = `${s.bg} border-b-4 border-r-4 p-5 rounded-3xl shadow-md transform ${s.rot} sticker-pop relative`;
+                sticker.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="font-display font-bold text-lg text-slate-900">${escapeHTML(s.name)}</span>
+                        <span class="bg-white/80 text-slate-800 text-xs font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                            ❤️ ${escapeHTML(s.show)}
+                        </span>
+                    </div>
+                    <p class="text-slate-800 font-medium text-sm sm:text-base leading-relaxed">
+                        "${escapeHTML(s.message)}"
+                    </p>
+                `;
+                stickersWall.appendChild(sticker);
+            });
+        }
+
+        // Eenvoudige XSS-beveiliging voor gebruikersinvoer
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag]));
+        }
+
+        fanwallForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('fan-name');
+            const showInput = document.getElementById('fan-show');
+            const msgInput = document.getElementById('fan-message');
+
+            const randomStyle = stickerStyles[Math.floor(Math.random() * stickerStyles.length)];
+
+            fanStickers.unshift({
+                name: nameInput.value.trim(),
+                show: showInput.value,
+                message: msgInput.value.trim(),
+                bg: randomStyle.bg,
+                rot: randomStyle.rot
+            });
+
+            renderStickers();
+            fanwallForm.reset();
+        });
+
+        // --- INITIALISATIE BIJ LADEN ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderEvents('Alle');
+            renderPrograms('Alles');
+            renderWrappers();
+            loadQuizQuestion();
+            renderStickers();
+        });
+    </script>
+</body>
+</html>
